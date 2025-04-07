@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mario Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="App Logo" class="logo-img">
+            </div>
+            
+            <nav>
+                <ul>
+                    <li>🏠 Home</li>
+                    <li>📄 History</li>
+                    <li>⚙️ Settings</li>
+                </ul>
+            </nav>
+
+            <div class="user-account">
+                <img src="{{ url_for('static', filename=avatar) }}" alt="Avatar" class="avatar">
+                <span>{{ username }}</span>
+                <br>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
+        </aside>
+
+        <!-- Main Chat Content -->
+        <main class="main-content">
+            <div class="container">
+                <h1>Chat with Mario!</h1>
+                <div id="chat"></div>
+                <div class="input-row">
+                    <input type="text" id="user_input" placeholder="Say something..." />
+                    <button id="send_btn">Send</button>
+                </div>
+                <button id="dark-mode-toggle">Toggle Dark Mode</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Send message
+        document.getElementById('send_btn').onclick = function () {
+            const userMessage = document.getElementById('user_input').value;
+            if (userMessage) {
+                addMessage(userMessage, 'user');
+                sendMessageToServer(userMessage);
+            }
+            document.getElementById('user_input').value = '';
+        };
+
+        // Add message
+        function addMessage(message, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
+            messageElement.textContent = message;
+            document.getElementById('chat').appendChild(messageElement);
+            document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+        }
+
+        // Send to server
+        function sendMessageToServer(message) {
+            addTypingIndicator();
+            fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                removeTypingIndicator();
+                if (data.status === 'success') {
+                    addMessage(data.message, 'bot');
+                }
+            });
+        }
+
+        // Typing indicator
+        function addTypingIndicator() {
+            const typingIndicator = document.createElement('div');
+            typingIndicator.id = 'typing-indicator';
+            typingIndicator.classList.add('message', 'bot-message');
+            typingIndicator.textContent = "Mario is thinking...";
+            document.getElementById('chat').appendChild(typingIndicator);
+            document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) typingIndicator.remove();
+        }
+
+        // Dark mode
+        document.getElementById('dark-mode-toggle').onclick = function () {
+            document.body.classList.toggle('dark-mode');
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+.app-layout {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 220px;
+    background-color: #333;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar .logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar nav ul li {
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.sidebar .user-account {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Main content adjusts to sidebar */
+.main-content {
+    flex: 1;
+    padding: 40px;
+    background-color: #f0f0f0;
+    overflow-y: auto;
+}
+
+/* Dark Mode Overrides */
+body.dark-mode .sidebar {
+    background-color: #1a1a1a;
+}
+
+body.dark-mode .sidebar nav ul li {
+    color: #ccc;
+}
+
+body.dark-mode .user-account span {
+    color: #fff;
+}
+.logo-img {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.profile-page {
+    text-align: center;
+    padding: 20px;
+}
+
+form {
+    display: inline-block;
+    text-align: left;
+}
+
+form div {
+    margin-bottom: 10px;
+}
+
+form input {
+    padding: 8px;
+    width: 200px;
+    margin: 5px;
+}
+
+form button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #45a049;
+}
+
+a {
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #4CAF50;
+}
+
+a:hover {
+    text-decoration: underline;
+}
